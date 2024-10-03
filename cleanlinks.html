@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SafeLinks Decoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        label {
+            display: block;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+        .button {
+            margin-top: 20px;
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #45a049;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+    <script type="text/javascript">
+        function decode_url() {
+            setTimeout("generate_decode_url()", 20);
+        }
+
+        function generate_decode_url() {
+            var link = document.getElementById("safelink").value;
+            var url_parts = link.split("?")[1];
+            var params = url_parts.split("&");
+            var target_url = "Either no rewrite for this URL is necessary, or there was an issue with the URL.";
+            for (n = 0; n < params.length; n++) {
+                namval = params[n].split("=");
+                if (namval[0] == "url") target_url = namval[1];
+            }
+            decode_url = decodeURIComponent(target_url);
+            document.getElementById("target_url").value = decode_url;
+        }
+
+        function clearTextAreas() {
+            document.getElementById("safelink").value = "";
+            document.getElementById("target_url").value = "";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>SafeLinks URL Decoder</h1>
+        <label for="safelink">Paste SafeLinks URL:</label>
+        <textarea autofocus id="safelink" onchange="decode_url()" onpaste="decode_url()"></textarea>
+
+        <label for="target_url">Decoded URL:</label>
+        <textarea id="target_url"></textarea>
+
+        <a href="#" class="button" onclick="clearTextAreas(); return false;">Clear Textareas</a>
+    </div>
+</body>
+</html>
